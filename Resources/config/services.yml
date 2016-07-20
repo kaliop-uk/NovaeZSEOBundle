@@ -19,7 +19,7 @@ services:
 
     novactive.novaseobundle.meta_name_schema:
         class: %novactive.novaseobundle.meta_name_schema.class%
-        arguments: [@ezpublish.api.repository]
+        arguments: ['@ezpublish.api.repository', null, [], '@ezpublish.field_type_nameable_collection.factory']
         calls:
             - [setLanguages, ["$languages$"]]
             - [setHtml5Converter, ["@ezpublish.fieldtype.ezxmltext.converter.html5"]]

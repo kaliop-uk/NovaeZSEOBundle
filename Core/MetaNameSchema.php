@@ -11,6 +11,7 @@
 namespace Novactive\Bundle\eZSEOBundle\Core;
 
 use eZ\Publish\API\Repository\Values\Content\Field;
+use eZ\Publish\Core\Repository\Helper\NameableFieldTypeRegistry;
 use eZ\Publish\Core\Repository\Values\Content\VersionInfo;
 use eZ\Publish\Core\Repository\NameSchemaService;
 use eZ\Publish\API\Repository\Values\Content\Content;
@@ -20,7 +21,8 @@ use eZ\Publish\SPI\Variation\VariationHandler;
 use eZ\Publish\Core\FieldType\XmlText\Value as XmlTextValue;
 use eZ\Publish\Core\FieldType\Relation\Value as RelationValue;
 use eZ\Publish\Core\FieldType\Image\Value as ImageValue;
-
+use eZ\Publish\API\Repository\Repository as RepositoryInterface;
+use eZ\Publish\Core\Base\Container\ApiLoader\FieldTypeNameableCollectionFactory;
 /**
  * Class MetaNameSchema
  */
@@ -53,6 +55,21 @@ class MetaNameSchema extends NameSchemaService
      * @var int
      */
     protected $fieldContentMaxLength = 255;
+
+    public function __construct(
+        RepositoryInterface $repository,
+        NameableFieldTypeRegistry $nameableFieldTypeRegistry = null,
+        array $settings,
+        FieldTypeNameableCollectionFactory $collectionFactory
+    )
+    {
+        if (is_null($nameableFieldTypeRegistry)) {
+            $nameableFieldTypeRegistry = new NameableFieldTypeRegistry($collectionFactory->getNameableFieldTypes());
+        }
+
+        parent::__construct($repository, $nameableFieldTypeRegistry, $settings);
+    }
+
 
     /**
      * Set prioritized languages
