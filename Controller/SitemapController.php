@@ -24,6 +24,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchHit;
 use eZ\Publish\API\Repository\Values\Content\Location;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class SitemapController
@@ -163,7 +164,7 @@ class SitemapController extends Controller
              *
              */
             $location = $searchHit->valueObject;
-            $url      = $this->generateUrl( $location, [ ], true );
+            $url      = $this->generateUrl( $location, [ ], UrlGeneratorInterface::ABSOLUTE_URL );
             $modified = $location->contentInfo->modificationDate->format( "c" );
             $loc      = $sitemap->createElement( "loc", $url );
             $lastmod  = $sitemap->createElement( "lastmod", $modified );
